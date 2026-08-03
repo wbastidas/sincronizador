@@ -1,6 +1,7 @@
-# Configuracion con credenciales reales (usar los *.example como plantilla)
+# Configuracion con credenciales reales (usar el *.example como plantilla)
 config/conexiones.json
-config/tablas.json
+# Nota: config/tablas.json SI se versiona (no tiene credenciales; es el
+# catalogo completo de tablas/relaciones generado desde el modelo).
 
 # Logs
 logs/

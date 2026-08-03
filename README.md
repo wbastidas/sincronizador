@@ -53,12 +53,34 @@ pip install "cx_Oracle==7.3.0"        # o la versión compatible con su cliente
 #   C:\Python27\ArcGIS10.8\python.exe   (arcpy ya viene incluido)
 ```
 
-Copie las plantillas y edítelas (no versione credenciales):
+Copie la plantilla de conexiones y edítela (no versione credenciales):
 
 ```bash
 cp config/conexiones.json.example config/conexiones.json
-cp config/tablas.json.example     config/tablas.json
 ```
+
+`config/tablas.json` ya viene **completo** con las 160 tablas y las relaciones del
+modelo (generado desde el diccionario y el archivo de relaciones). Si el modelo
+cambia, se puede regenerar:
+
+```bash
+python herramientas/generar_config.py \
+    --diccionario ruta/diccionario.md \
+    --relaciones  ruta/relaciones.md \
+    --salida      config/tablas.json
+```
+
+El catálogo incluye tres bloques:
+- `tablas`: las 160 tablas/feature classes, con `columna_geometria`,
+  `red_geometrica` y `llave_negocio` autodetectados.
+- `relaciones`: 59 relaciones 1:1 / 1:M (por `GLOBALID`), listas para remapeo.
+- `relaciones_revisar_m_a_n`: 16 extremos de relaciones **M:N** (por `OBJECTID` o
+  `GUID`); **confirme el nombre de la tabla intermedia** (`tabla_destino`) antes
+  de activarlas moviéndolas al bloque `relaciones`.
+
+> Tablas sin `GLOBALID` (cartografía base y tablas intermedias) usan `OBJECTID`
+> como llave y quedan marcadas con `_comentario`: revise si deben sincronizarse
+> por sí solas o únicamente a través de las relaciones.
 
 ## 3. Ejecución
 
