@@ -1,0 +1,17 @@
+# Configuracion con credenciales reales (usar los *.example como plantilla)
+config/conexiones.json
+config/tablas.json
+
+# Logs
+logs/
+*.log
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+
+# Entornos / IDE
+.venv/
+.idea/
+.vscode/
