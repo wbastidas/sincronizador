@@ -174,8 +174,9 @@ def construir_relaciones(rels):
         fk_d = r["llaves_d"][1] if len(r["llaves_d"]) >= 2 else None
         tipo = "guid" if pk_o.upper() in ("GLOBALID", "GUID") else "oid"
         base = {
-            "_comentario": ("M:N: confirme el nombre de la tabla intermedia en "
-                            "'tabla_destino' (por defecto = nombre de la relacion)."),
+            "_comentario": ("M:N: 'tabla_destino' asume la convencion de ArcGIS "
+                            "(tabla intermedia = nombre de la relationship class). "
+                            "Ajuste el nombre si su esquema difiere."),
             "tabla_destino": r["nombre"],
             "tipo_llave": tipo,
         }
@@ -205,13 +206,18 @@ def main(argv=None):
     rels = parsear_relaciones(args.relaciones)
 
     entradas_tabla = [construir_tabla(t) for t in tablas]
-    activas, revisar = construir_relaciones(rels)
+    activas, mn = construir_relaciones(rels)
+    # Todas las relaciones quedan activas: las M:N asumen tabla intermedia =
+    # nombre de la relationship class (convencion de ArcGIS), marcada por su
+    # _comentario para ajuste si el esquema difiere.
+    relaciones = activas + mn
 
     config = {
         "_comentario": (
             "Generado por herramientas/generar_config.py a partir del modelo. "
-            "Incluye TODOS los elementos. Revise las relaciones marcadas con "
-            "_comentario (M:N) y las tablas sin GLOBALID antes de la 1a corrida."),
+            "Incluye TODOS los elementos. Las relaciones M:N (con _comentario) "
+            "asumen tabla intermedia = nombre de la relacion; ajuste si difiere. "
+            "Revise tambien las tablas sin GLOBALID antes de la 1a corrida."),
         "opciones": {
             "incluir_red_geometrica": False,
             "sincronizar_dominios": True,
@@ -219,8 +225,7 @@ def main(argv=None):
             "modo_simulacion": False,
         },
         "tablas": entradas_tabla,
-        "relaciones": activas,
-        "relaciones_revisar_m_a_n": revisar,
+        "relaciones": relaciones,
     }
 
     with io.open(args.salida, mode="w", encoding="utf-8") as fh:
@@ -233,8 +238,9 @@ def main(argv=None):
     n_sin_gid = sum(1 for e in entradas_tabla if e["llave_negocio"] == "OBJECTID")
     print(u"Tablas: %d (con geometria=%d, red=%d, sin GLOBALID=%d)" % (
         len(entradas_tabla), n_geom, n_red, n_sin_gid))
-    print(u"Relaciones activas (guid/oid 1:1,1:M): %d" % len(activas))
-    print(u"Relaciones M:N para revisar: %d" % len(revisar))
+    print(u"Relaciones 1:1 / 1:M (guid/oid): %d" % len(activas))
+    print(u"Relaciones M:N activadas: %d" % len(mn))
+    print(u"Relaciones totales: %d" % len(relaciones))
     print(u"Salida: %s" % args.salida)
     return 0
 

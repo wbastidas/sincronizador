@@ -70,13 +70,15 @@ python herramientas/generar_config.py \
     --salida      config/tablas.json
 ```
 
-El catálogo incluye tres bloques:
+El catálogo incluye dos bloques:
 - `tablas`: las 160 tablas/feature classes, con `columna_geometria`,
   `red_geometrica` y `llave_negocio` autodetectados.
-- `relaciones`: 59 relaciones 1:1 / 1:M (por `GLOBALID`), listas para remapeo.
-- `relaciones_revisar_m_a_n`: 16 extremos de relaciones **M:N** (por `OBJECTID` o
-  `GUID`); **confirme el nombre de la tabla intermedia** (`tabla_destino`) antes
-  de activarlas moviéndolas al bloque `relaciones`.
+- `relaciones`: **75** relaciones activas para remapeo:
+  - 59 relaciones 1:1 / 1:M (por `GLOBALID` / `CIRCUITSOURCEGUID`).
+  - 16 extremos de relaciones **M:N** (por `OBJECTID` o `GUID`). Su
+    `tabla_destino` asume la convención de ArcGIS (**tabla intermedia = nombre de
+    la relationship class**) y quedan marcados con `_comentario`; ajuste el nombre
+    si su esquema difiere.
 
 > Tablas sin `GLOBALID` (cartografía base y tablas intermedias) usan `OBJECTID`
 > como llave y quedan marcadas con `_comentario`: revise si deben sincronizarse

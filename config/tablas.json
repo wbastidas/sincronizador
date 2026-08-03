@@ -1,5 +1,5 @@
 {
-  "_comentario": "Generado por herramientas/generar_config.py a partir del modelo. Incluye TODOS los elementos. Revise las relaciones marcadas con _comentario (M:N) y las tablas sin GLOBALID antes de la 1a corrida.",
+  "_comentario": "Generado por herramientas/generar_config.py a partir del modelo. Incluye TODOS los elementos. Las relaciones M:N (con _comentario) asumen tabla intermedia = nombre de la relacion; ajuste si difiere. Revise tambien las tablas sin GLOBALID antes de la 1a corrida.",
   "opciones": {
     "incluir_red_geometrica": false,
     "sincronizar_dominios": true,
@@ -1598,11 +1598,9 @@
       "tabla_destino": "PuntoCarga",
       "tipo_llave": "guid",
       "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
-    }
-  ],
-  "relaciones_revisar_m_a_n": [
+    },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "TramoBT_Ducto",
       "tipo_llave": "oid",
       "nombre": "TramoBT_Ducto_extremoOrigen",
@@ -1610,7 +1608,7 @@
       "columna_fk": "SecondaryUGOID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "TramoBT_Ducto",
       "tipo_llave": "oid",
       "nombre": "TramoBT_Ducto_extremoDestino",
@@ -1618,7 +1616,7 @@
       "columna_fk": "DuctOID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "TramoDist_Ducto",
       "tipo_llave": "oid",
       "nombre": "TramoDist_Ducto_extremoOrigen",
@@ -1626,7 +1624,7 @@
       "columna_fk": "PrimaryConductorOID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "TramoDist_Ducto",
       "tipo_llave": "oid",
       "nombre": "TramoDist_Ducto_extremoDestino",
@@ -1634,7 +1632,7 @@
       "columna_fk": "DuctOID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "TramoSubtrans_Ducto",
       "tipo_llave": "oid",
       "nombre": "TramoSubtrans_Ducto_extremoOrigen",
@@ -1642,7 +1640,7 @@
       "columna_fk": "PrimaryConductorOID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "TramoSubtrans_Ducto",
       "tipo_llave": "oid",
       "nombre": "TramoSubtrans_Ducto_extremoDestino",
@@ -1650,7 +1648,7 @@
       "columna_fk": "DuctOID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSub_EstruSubt",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSub_EstruSubt_extremoOrigen",
@@ -1658,7 +1656,7 @@
       "columna_fk": "ULSObjectID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSub_EstruSubt",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSub_EstruSubt_extremoDestino",
@@ -1666,7 +1664,7 @@
       "columna_fk": "UGObjectId"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSub_EstrucSubterr",
       "tipo_llave": "guid",
       "nombre": "EstruLineaSub_EstrucSubterr_extremoOrigen",
@@ -1674,7 +1672,7 @@
       "columna_fk": "ULSGuid"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSub_EstrucSubterr",
       "tipo_llave": "guid",
       "nombre": "EstruLineaSub_EstrucSubterr_extremoDestino",
@@ -1682,7 +1680,7 @@
       "columna_fk": "EstruSubtGuid"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSubt_TramoBTSubt",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSubt_TramoBTSubt_extremoOrigen",
@@ -1690,7 +1688,7 @@
       "columna_fk": "ULSObjectID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSubt_TramoBTSubt",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSubt_TramoBTSubt_extremoDestino",
@@ -1698,7 +1696,7 @@
       "columna_fk": "UGObjectID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSubt_TramoDistSubt",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSubt_TramoDistSubt_extremoOrigen",
@@ -1706,7 +1704,7 @@
       "columna_fk": "ULSObjectID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSubt_TramoDistSubt",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSubt_TramoDistSubt_extremoDestino",
@@ -1714,7 +1712,7 @@
       "columna_fk": "UGObjectID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSubt_TramoSubTrans",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSubt_TramoSubTrans_extremoOrigen",
@@ -1722,7 +1720,7 @@
       "columna_fk": "ULSObjectID"
     },
     {
-      "_comentario": "M:N: confirme el nombre de la tabla intermedia en 'tabla_destino' (por defecto = nombre de la relacion).",
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
       "tabla_destino": "EstruLineaSubt_TramoSubTrans",
       "tipo_llave": "oid",
       "nombre": "EstruLineaSubt_TramoSubTrans_extremoDestino",
