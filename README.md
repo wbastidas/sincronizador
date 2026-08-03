@@ -27,7 +27,8 @@ sincronizador/
 │   ├── oracle_db.py           # Envoltura cx_Oracle (binds, metadatos, dominios)
 │   ├── modelo.py              # Reglas del modelo (columnas sistema/red/espejo)
 │   ├── dominios.py            # Lectura GDB_ITEMS + comparación de dominios
-│   └── comparador.py          # Motor de diferencias (nuevos/modif/elim)
+│   ├── comparador.py          # Motor de diferencias (nuevos/modif/elim)
+│   └── reporte.py             # Escritor de CSV (UTF-8+BOM) y Excel (openpyxl)
 ├── proceso1_oracle/
 │   └── sincronizar_oracle.py  # PROCESO 1 (entry point)
 ├── proceso2_arcpy/
@@ -35,9 +36,13 @@ sincronizador/
 │   ├── arcpy_io.py            # Cursores + manejo OBJECTID/GLOBALID/MIOID/MIGUID
 │   ├── dominios_arcpy.py      # Aplicación de dominios con arcpy
 │   └── sincronizar_arcpy.py   # PROCESO 2 (entry point)
+├── herramientas/
+│   ├── generar_config.py      # Genera config/tablas.json desde el modelo
+│   └── reporte_diferencias.py # Reporte CSV/Excel de diferencias (sin aplicar)
 ├── config/
 │   ├── conexiones.json.example
-│   └── tablas.json.example
+│   ├── tablas.json.example
+│   └── tablas.json            # Catálogo completo (160 tablas, 75 relaciones)
 ├── tests/test_nucleo.py       # Pruebas sin Oracle/arcpy
 ├── requirements-py27.txt
 └── README.md
@@ -98,7 +103,33 @@ python -m proceso1_oracle.sincronizar_oracle \
     --conexiones config/conexiones.json --tablas config/tablas.json
 ```
 
-## 4. Conceptos clave del modelo
+## 4. Reporte de diferencias (vista previa, antes de aplicar)
+
+Antes de escribir nada, genere un **reporte de diferencias** ORIGEN vs DESTINO.
+Usa la misma lógica de comparación (vía Oracle, rápido, sin arcpy) y **no aplica
+ningún cambio**:
+
+```bash
+python herramientas/reporte_diferencias.py \
+    --conexiones config/conexiones.json --tablas config/tablas.json \
+    --salida reportes/2026-08-03
+# opcionales:  --con-geometria   (compara también la geometría, más lento)
+#              --incluir-red     (incluye tablas de red geométrica)
+```
+
+Genera en la carpeta de salida:
+
+| Archivo | Contenido |
+|---|---|
+| `resumen.csv` | Una fila por tabla: nuevos, modificados, eliminados, iguales, totales |
+| `detalle.csv` | Una fila por diferencia: tipo (NUEVO/MODIFICADO/ELIMINADO), llave, columnas cambiadas |
+| `dominios.csv` | Valores de dominio a agregar/quitar/cambiar |
+| `reporte_diferencias.xlsx` | Lo mismo en un libro de varias hojas (solo si `openpyxl` está instalado) |
+
+Los CSV se escriben en **UTF-8 con BOM**, así Excel muestra bien tildes y eñes al
+abrirlos con doble clic. Revise este reporte y luego ejecute el proceso 1 o 2.
+
+## 5. Conceptos clave del modelo
 
 - **Llave de negocio = `GLOBALID`** (GUID global, estable entre bases). `OBJECTID`
   es local de cada geodatabase.
@@ -110,7 +141,7 @@ python -m proceso1_oracle.sincronizar_oracle \
   `ELECTRICTRACEWEIGHT`, `FDRMGRNONTRACEABLE`, `PARENTCIRCUITSOURCEGUID`. Son
   **opcionales** (solo se procesan con `incluir_red_geometrica: true`).
 
-## 5. Cómo se preservan las relaciones
+## 6. Cómo se preservan las relaciones
 
 ### Proceso 1 (Oracle directo)
 Como se puede escribir el `GLOBALID`, al insertar en destino se **copia el mismo
@@ -135,7 +166,7 @@ Al insertar, arcpy asigna **nuevos** `OBJECTID`/`GLOBALID`. El flujo es:
 > (nombre, tabla origen/destino, `tipo_llave` `guid`|`oid` y `columna_fk`),
 > basándose en el archivo de relaciones del modelo.
 
-## 6. Manejo de caracteres especiales
+## 7. Manejo de caracteres especiales
 
 - `NLS_LANG` y `encoding`/`nencoding` de la conexión se fijan a **UTF-8**.
 - Toda lectura se convierte a `unicode` de forma tolerante (`comun.utiles.to_unicode`).
@@ -144,7 +175,7 @@ Al insertar, arcpy asigna **nuevos** `OBJECTID`/`GLOBALID`. El flujo es:
 - El logging codifica a UTF-8 con `errors='replace'` para no abortar por un
   registro con caracteres corruptos.
 
-## 7. Dominios
+## 8. Dominios
 
 - **Proceso 1**: lee los dominios reales desde `GDB_ITEMS` en ambas bases y
   **reporta** las diferencias (valores a agregar/quitar/cambiar). La tabla de
@@ -154,7 +185,7 @@ Al insertar, arcpy asigna **nuevos** `OBJECTID`/`GLOBALID`. El flujo es:
   `AddCodedValueToDomain`, `DeleteCodedValueFromDomain`, etc. El borrado de un
   dominio completo solo se reporta (puede estar asignado a campos).
 
-## 8. Seguridad y buenas prácticas
+## 9. Seguridad y buenas prácticas
 
 - **`--simular`** primero: revise el reporte de diferencias antes de escribir.
 - **Transaccional**: el proceso 1 confirma por tabla (rollback ante error); el
@@ -164,13 +195,13 @@ Al insertar, arcpy asigna **nuevos** `OBJECTID`/`GLOBALID`. El flujo es:
 - **Filtros** (`filtro`) para particionar tablas grandes por empresa/provincia.
 - Haga **respaldo** del destino antes de la primera corrida.
 
-## 9. Pruebas
+## 10. Pruebas
 
 ```bash
 python -m tests.test_nucleo    # valida comparador, firmas, GUID y dominios
 ```
 
-## 10. Limitaciones conocidas
+## 11. Limitaciones conocidas
 
 - El proceso 1 sobre datos **versionados** o de **red geométrica** no mantiene el
   estado SDE ni la conectividad; para esos casos use el proceso 2.

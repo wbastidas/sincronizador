@@ -104,6 +104,27 @@ def test_dominios():
     verificar(u"S" in d.codigos_cambiar, u"Codigo S tiene descripcion distinta")
 
 
+def test_reporte_csv():
+    print(u"test_reporte_csv")
+    import io as _io
+    import os
+    import tempfile
+    from comun.reporte import EscritorCSV
+
+    carpeta = tempfile.mkdtemp()
+    ruta = os.path.join(carpeta, "r.csv")
+    with EscritorCSV(ruta, [u"COL_A", u"COL_B"]) as w:
+        w.fila([u"Muñoz", 10])
+        w.fila([u"Ñandú, áéíóú", None])
+
+    with _io.open(ruta, mode="r", encoding="utf-8-sig") as fh:
+        contenido = fh.read()
+    verificar(u"COL_A" in contenido and u"Muñoz" in contenido,
+              u"CSV contiene encabezado y datos con tildes")
+    verificar(u"Ñandú, áéíóú" in contenido,
+              u"CSV preserva caracteres especiales y entrecomilla comas")
+
+
 def main():
     print(u"== Pruebas de nucleo (sin Oracle/arcpy) ==")
     test_normalizar_guid()
@@ -111,6 +132,7 @@ def main():
     test_caracteres_especiales()
     test_comparador()
     test_dominios()
+    test_reporte_csv()
     print(u"")
     if _fallos:
         print(u"RESULTADO: %d fallo(s)" % len(_fallos))

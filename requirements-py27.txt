@@ -15,4 +15,11 @@ cx_Oracle>=5.3,<8.0
 # ArcGIS Desktop 10.8.1 y su interprete Python 2.7 (normalmente en
 # C:\Python27\ArcGIS10.8\python.exe). No agregue arcpy aqui.
 #
-# La libreria estandar cubre el resto (json, xml.etree, hashlib, io, logging).
+# La libreria estandar cubre el resto (json, xml.etree, hashlib, io, logging, csv).
+#
+# OPCIONAL - Reporte en Excel (.xlsx):
+# El reporte de diferencias genera siempre CSV (que Excel abre directamente). Si
+# ademas desea un libro .xlsx con varias hojas, instale openpyxl compatible con
+# Python 2.7:
+#   pip install "openpyxl==2.6.4"
+openpyxl>=2.4,<2.7 ; python_version < "3"
