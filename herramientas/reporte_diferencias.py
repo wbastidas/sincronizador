@@ -36,6 +36,13 @@ import hashlib
 import os
 import sys
 
+# Permite ejecutar tanto como modulo (python -m herramientas.reporte_diferencias)
+# como script directo (python herramientas/reporte_diferencias.py) agregando la
+# raiz del proyecto al path para poder importar el paquete `comun`.
+_RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _RAIZ not in sys.path:
+    sys.path.insert(0, _RAIZ)
+
 from comun import config as cfg_mod
 from comun import dominios as dom_mod
 from comun import modelo
@@ -47,16 +54,25 @@ from comun.utiles import normalizar_guid
 
 
 class GeneradorReporte(object):
-    def __init__(self, configuracion, log, con_geometria=False):
+    def __init__(self, configuracion, log, con_geometria=False,
+                 modo_verificacion=False):
         self.cfg = configuracion
         self.log = log
         self.con_geometria = con_geometria
+        # En modo verificacion el reporte se interpreta como control POST-carga:
+        # el resultado esperado es CERO diferencias.
+        self.modo_verificacion = modo_verificacion
         self.filas_resumen = []   # para xlsx
         self.filas_detalle = []
         self.filas_dominios = []
+        self.filas_verificacion = []  # (TABLA, DIFERENCIAS, ESTADO)
+        self.total_diferencias = 0    # suma global (tablas + dominios)
 
     def ejecutar(self, carpeta_salida):
-        self.log.info(u"=== Reporte de diferencias (vista previa, sin cambios) ===")
+        titulo = ("Verificacion POST-sincronizacion (esperado: 0 diferencias)"
+                  if self.modo_verificacion
+                  else "Reporte de diferencias (vista previa, sin cambios)")
+        self.log.info(u"=== %s ===", titulo)
         with ConexionOracle(self.cfg.origen.oracle) as origen, \
                 ConexionOracle(self.cfg.destino.oracle) as destino:
 
@@ -74,12 +90,18 @@ class GeneradorReporte(object):
                         self.log.error(u"Tabla %s: error en el reporte: %s",
                                        cfg_tabla.nombre, exc)
                         w_res.fila([cfg_tabla.nombre, "ERROR", "", "", "", "", ""])
+                        self.filas_verificacion.append(
+                            [cfg_tabla.nombre, "", "ERROR"])
 
             self._reportar_dominios(origen, destino, carpeta_salida)
+
+        if self.modo_verificacion:
+            self._escribir_verificacion(carpeta_salida)
 
         # Libro Excel combinado (opcional).
         self._escribir_excel(carpeta_salida)
         self.log.info(u"Reporte generado en: %s", carpeta_salida)
+        return self.total_diferencias
 
     # ------------------------------------------------------------------ #
     def _reportar_tabla(self, origen, destino, cfg_tabla, w_res, w_det):
@@ -118,6 +140,12 @@ class GeneradorReporte(object):
                                    len(res.eliminados), res.iguales,
                                    len(filas_o), len(filas_d)])
         self.log.info(res.resumen())
+
+        # Acumulado para la verificacion post-sincronizacion.
+        dif_tabla = len(res.nuevos) + len(res.modificados) + len(res.eliminados)
+        self.total_diferencias += dif_tabla
+        self.filas_verificacion.append(
+            [nombre, dif_tabla, "OK" if dif_tabla == 0 else "CON_DIFERENCIAS"])
 
         for k in res.nuevos:
             self._detalle(w_det, nombre, "NUEVO", k, "")
@@ -174,11 +202,37 @@ class GeneradorReporte(object):
                     self._fila_dom(w, d.nombre, d.estado, "QUITAR", cod, "", desc)
                 for cod, (o, dd) in sorted(d.codigos_cambiar.items()):
                     self._fila_dom(w, d.nombre, d.estado, "CAMBIAR", cod, o, dd)
-        self.log.info(u"Dominios con diferencias: %d", len(difs))
+        # Cada valor de dominio distinto cuenta como una diferencia.
+        dif_dom = sum(len(d.codigos_agregar) + len(d.codigos_quitar) +
+                      len(d.codigos_cambiar) for d in difs)
+        self.total_diferencias += dif_dom
+        self.filas_verificacion.append(
+            ["(DOMINIOS)", dif_dom, "OK" if dif_dom == 0 else "CON_DIFERENCIAS"])
+        self.log.info(u"Dominios con diferencias: %d (valores: %d)",
+                      len(difs), dif_dom)
 
     def _fila_dom(self, w, nombre, estado, accion, cod, vo, vd):
         w.fila([nombre, estado, accion, cod, vo, vd])
         self.filas_dominios.append([nombre, estado, accion, cod, vo, vd])
+
+    # ------------------------------------------------------------------ #
+    def _escribir_verificacion(self, carpeta):
+        """Escribe verificacion.csv con el estado por tabla y el veredicto global."""
+        with EscritorCSV(os.path.join(carpeta, "verificacion.csv"),
+                         ["TABLA", "DIFERENCIAS", "ESTADO"]) as w:
+            for fila in self.filas_verificacion:
+                w.fila(fila)
+            veredicto = "SINCRONIZADO" if self.total_diferencias == 0 \
+                else "PENDIENTE"
+            w.fila(["=== VEREDICTO GLOBAL ===", self.total_diferencias, veredicto])
+
+        if self.total_diferencias == 0:
+            self.log.info(u"VERIFICACION OK: ORIGEN y DESTINO sin diferencias. "
+                          u"Bases SINCRONIZADAS.")
+        else:
+            self.log.warning(
+                u"VERIFICACION: quedan %d diferencia(s). Bases AUN NO iguales; "
+                u"revise verificacion.csv y detalle.csv.", self.total_diferencias)
 
     # ------------------------------------------------------------------ #
     def _escribir_excel(self, carpeta):
@@ -197,6 +251,10 @@ class GeneradorReporte(object):
              ["DOMINIO", "ESTADO", "ACCION", "CODIGO", "VALOR_ORIGEN",
               "VALOR_DESTINO"], self.filas_dominios),
         ]
+        if self.modo_verificacion:
+            hojas.append(("Verificacion",
+                          ["TABLA", "DIFERENCIAS", "ESTADO"],
+                          self.filas_verificacion))
         if escribir_excel(ruta, hojas):
             self.log.info(u"Libro Excel: %s", ruta)
 
@@ -211,6 +269,10 @@ def main(argv=None):
                         help="Compara tambien la geometria (mas lento).")
     parser.add_argument("--incluir-red", action="store_true",
                         help="Incluye las tablas de la red geometrica.")
+    parser.add_argument("--verificar", action="store_true",
+                        help="Modo verificacion POST-sincronizacion: agrega "
+                             "verificacion.csv con veredicto global y devuelve "
+                             "codigo de salida 1 si quedan diferencias.")
     args = parser.parse_args(argv)
 
     log = obtener_logger("reporte_diferencias")
@@ -222,8 +284,13 @@ def main(argv=None):
     if args.incluir_red:
         configuracion.incluir_red_geometrica = True
 
-    GeneradorReporte(configuracion, log, con_geometria=args.con_geometria) \
-        .ejecutar(args.salida)
+    total = GeneradorReporte(configuracion, log, con_geometria=args.con_geometria,
+                             modo_verificacion=args.verificar).ejecutar(args.salida)
+
+    # En verificacion, el codigo de salida refleja el resultado (0 = sin
+    # diferencias, apto para automatizacion/CI post-carga).
+    if args.verificar:
+        return 0 if total == 0 else 1
     return 0
 
 

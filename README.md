@@ -129,6 +129,29 @@ Genera en la carpeta de salida:
 Los CSV se escriben en **UTF-8 con BOM**, así Excel muestra bien tildes y eñes al
 abrirlos con doble clic. Revise este reporte y luego ejecute el proceso 1 o 2.
 
+### Verificación posterior (post-sincronización)
+
+Después de aplicar la sincronización, vuelva a correr la herramienta con
+`--verificar` para **confirmar que ORIGEN y DESTINO quedaron sin diferencias**:
+
+```bash
+python herramientas/reporte_diferencias.py \
+    --conexiones config/conexiones.json --tablas config/tablas.json \
+    --salida reportes/verificacion --verificar
+echo "codigo de salida: $?"   # 0 = sin diferencias (SINCRONIZADO); 1 = pendiente
+```
+
+Agrega `verificacion.csv` con el estado por tabla (`OK` / `CON_DIFERENCIAS`) y una
+fila final con el **veredicto global** (`SINCRONIZADO` / `PENDIENTE`). El **código
+de salida** es `0` si no quedan diferencias y `1` si aún las hay, lo que permite
+encadenar sincronización + verificación en un script o tarea programada:
+
+```bash
+python -m proceso1_oracle.sincronizar_oracle ... && \
+python herramientas/reporte_diferencias.py ... --verificar && \
+echo "Sincronización verificada: bases idénticas."
+```
+
 ## 5. Conceptos clave del modelo
 
 - **Llave de negocio = `GLOBALID`** (GUID global, estable entre bases). `OBJECTID`
