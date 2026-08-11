@@ -28,6 +28,7 @@ sincronizador/
 │   ├── modelo.py              # Reglas del modelo (columnas sistema/red/espejo)
 │   ├── dominios.py            # Lectura GDB_ITEMS + comparación de dominios
 │   ├── comparador.py          # Motor de diferencias (nuevos/modif/elim)
+│   ├── relaciones.py          # Remapeo de FK en 2 fases (sin colisiones)
 │   └── reporte.py             # Escritor de CSV (UTF-8+BOM) y Excel (openpyxl)
 ├── proceso1_oracle/
 │   └── sincronizar_oracle.py  # PROCESO 1 (entry point)
@@ -221,8 +222,27 @@ Al insertar, arcpy asigna **nuevos** `OBJECTID`/`GLOBALID`. El flujo es:
 ## 10. Pruebas
 
 ```bash
-python -m tests.test_nucleo    # valida comparador, firmas, GUID y dominios
+python -m tests.test_nucleo         # comparador, firmas, GUID, dominios, CSV
+python -m tests.test_carga_masiva   # 20.000 elementos en AMBOS procesos
 ```
+
+### Prueba de carga (20.000 elementos)
+
+`tests/test_carga_masiva.py` ejerce el **código real de orquestación** de los dos
+procesos contra dobles de prueba (`tests/dobles.py`: `FakeOracle` / `FakeArcpy`),
+sin necesidad de Oracle ni ArcGIS. Reparto: **8.000 nuevos + 7.000 modificados +
+5.000 eliminados** (+2.000 iguales). Verifica que:
+
+- **Proceso 1**: el destino queda idéntico al origen (0 diferencias), el
+  `GLOBALID` se copia tal cual y la FK por `OBJECTID` se remapea correctamente.
+- **Proceso 2**: los `INSERT` guardan `MIOID`/`MIGUID` del origen y reciben un
+  `GLOBALID` nuevo, se eliminan los sobrantes, la FK por `GLOBALID` se remapea, y
+  el resultado queda sin diferencias.
+
+> Estas pruebas detectaron y validaron la corrección de dos defectos: (1) no
+> comparar `GLOBALID` como atributo (identidad, no dato) ni las FK remapeadas, y
+> (2) el **remapeo de FK en dos fases** de `comun/relaciones.py`, a prueba de
+> colisiones cuando los `OBJECTID` nuevos se solapan con los viejos.
 
 ## 11. Limitaciones conocidas
 

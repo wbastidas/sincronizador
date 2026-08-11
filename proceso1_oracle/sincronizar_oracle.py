@@ -51,6 +51,7 @@ from comun import modelo
 from comun.comparador import comparar
 from comun.log import obtener_logger
 from comun.oracle_db import ConexionOracle
+from comun.relaciones import remapear_fk
 from comun.utiles import normalizar_guid, trocear
 
 
@@ -150,7 +151,11 @@ class SincronizadorOracle(object):
                     u"incluir_red_geometrica esta desactivada; se omite.", nombre)
                 return
 
-        comparables = modelo.columnas_comparables(columnas_comunes, cfg_tabla)
+        # Excluir de la comparacion las FK remapeadas por relaciones OID (quedan
+        # con la identidad local del destino tras el remapeo).
+        fks = modelo.columnas_fk_de_tabla(nombre, self.cfg.relaciones)
+        comparables = modelo.columnas_comparables(columnas_comunes, cfg_tabla,
+                                                  extra_ignorar=fks)
         # Columnas a copiar: en proceso 1 SI se incluye GLOBALID (via directa).
         copiables = modelo.columnas_copiables(columnas_comunes, cfg_tabla,
                                               incluir_globalid=True)
@@ -383,14 +388,10 @@ class SincronizadorOracle(object):
             mapa = self.mapa_oid.get(rel.tabla_origen.upper(), {})
             if not mapa:
                 continue
-            actualizados = 0
-            for oid_origen, oid_destino in mapa.items():
-                sql = "UPDATE %s SET %s = :nuevo WHERE %s = :viejo" % (
-                    rel.tabla_destino, rel.columna_fk, rel.columna_fk)
-                actualizados += destino.ejecutar(
-                    sql, {"nuevo": oid_destino, "viejo": oid_origen})
-            self.log.info(u"  Relacion %s: %d FKs remapeadas en %s.%s",
-                          rel.nombre, actualizados, rel.tabla_destino, rel.columna_fk)
+            # Remapeo en dos fases (a prueba de colisiones: los OBJECTID nuevos
+            # pueden solaparse con los viejos).
+            remapear_fk(destino, rel.tabla_destino, rel.columna_fk, mapa,
+                        "oid", self.cfg.tamano_lote, self.log)
 
     # ------------------------------------------------------------------ #
     # Auxiliares

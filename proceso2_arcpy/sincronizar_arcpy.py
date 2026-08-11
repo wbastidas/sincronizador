@@ -47,7 +47,8 @@ from comun import dominios as dom_mod
 from comun import modelo
 from comun.log import obtener_logger
 from comun.oracle_db import ConexionOracle
-from comun.utiles import firma_fila, diferencias_campos, normalizar_guid, trocear
+from comun.relaciones import remapear_fk
+from comun.utiles import firma_fila, diferencias_campos, normalizar_guid
 
 from proceso2_arcpy import arcpy_io
 from proceso2_arcpy import dominios_arcpy
@@ -151,7 +152,11 @@ class SincronizadorArcpy(object):
         if not cols_o:
             self.log.warning(u"Tabla %s no existe en origen; se omite.", nombre)
             return
-        comparables = modelo.columnas_comparables(cols_o, cfg_tabla)
+        # Excluir de la comparacion las FK remapeadas por relaciones (quedan con
+        # la identidad del destino tras el remapeo via Oracle).
+        fks = modelo.columnas_fk_de_tabla(nombre, self.cfg.relaciones)
+        comparables = modelo.columnas_comparables(cols_o, cfg_tabla,
+                                                  extra_ignorar=fks)
         # En proceso 2 NO se escriben OBJECTID ni GLOBALID en el INSERT.
         copiables = modelo.columnas_copiables(cols_o, cfg_tabla,
                                               incluir_globalid=False)
@@ -213,18 +218,21 @@ class SincronizadorArcpy(object):
                 cambios[k] = (idx_origen[k], cols)
             escritor.actualizar(ruta_destino, cambios, copiables,
                                 tiene_geometria, geom_origen)
-            # Los modificados ya existian: su GLOBALID de destino no cambia; se
-            # registra el mapa (guid_origen -> guid_destino existente) para las
-            # relaciones.
-            for k, _cols in modificados:
-                gid_dest = idx_destino[k].get("GLOBALID")
-                if gid_dest:
-                    self.mapa_guid.setdefault(nombre.upper(), {})[k] = \
-                        normalizar_guid(gid_dest)
-                oid_dest = idx_destino[k].get("OBJECTID")
-                oid_orig = idx_origen[k].get("OBJECTID")
-                if oid_dest is not None and oid_orig is not None:
-                    self.mapa_oid.setdefault(nombre.upper(), {})[oid_orig] = oid_dest
+
+        # --- Registro de identidad de las filas EXISTENTES (iguales + modif) --
+        # Su GLOBALID/OBJECTID de destino ya existe y no cambia; se registra el
+        # mapa (identidad_origen -> identidad_destino) para reparar relaciones,
+        # incluso cuando un hijo nuevo apunta a un padre que no cambio.
+        for k in (set(idx_origen) & set(idx_destino)):
+            fd = idx_destino[k]
+            gid_dest = fd.get("GLOBALID")
+            if gid_dest:
+                self.mapa_guid.setdefault(nombre.upper(), {})[k] = \
+                    normalizar_guid(gid_dest)
+            oid_dest = fd.get("OBJECTID")
+            oid_orig = idx_origen[k].get("OBJECTID")
+            if oid_dest is not None and oid_orig is not None:
+                self.mapa_oid.setdefault(nombre.upper(), {})[oid_orig] = oid_dest
 
         # --- DELETE ----------------------------------------------------------
         if eliminados and cfg_tabla.politica_borrado != "ninguna":
@@ -296,18 +304,11 @@ class SincronizadorArcpy(object):
     def _remapear_fk(self, ora_destino, rel, mapa):
         """Actualiza la columna FK de la tabla hija: viejo_valor -> nuevo_valor.
 
-        Se hace por lotes con ``executemany`` (rapido).  Se usa CASE/bind por
-        fila para no lanzar un UPDATE por cada valor.
+        Usa el remapeo seguro en dos fases (comun.relaciones), a prueba de
+        colisiones entre el espacio de valores viejos y nuevos, por lotes.
         """
-        sql = "UPDATE %s SET %s = :nuevo WHERE %s = :viejo" % (
-            rel.tabla_destino, rel.columna_fk, rel.columna_fk)
-        binds = [{"nuevo": nuevo, "viejo": viejo}
-                 for viejo, nuevo in mapa.items() if nuevo != viejo]
-        total = 0
-        for bloque in trocear(binds, self.cfg.tamano_lote):
-            total += ora_destino.ejecutar_muchos(sql, bloque)
-        self.log.info(u"  Relacion %s: %d FKs remapeadas en %s.%s",
-                      rel.nombre, total, rel.tabla_destino, rel.columna_fk)
+        remapear_fk(ora_destino, rel.tabla_destino, rel.columna_fk, mapa,
+                    rel.tipo_llave, self.cfg.tamano_lote, self.log)
 
     # ------------------------------------------------------------------ #
     # Auxiliares

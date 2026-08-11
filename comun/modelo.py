@@ -75,22 +75,35 @@ def afecta_red_geometrica(columnas):
     return bool(conjunto & COLUMNAS_RED)
 
 
-def columnas_comparables(todas_las_columnas, cfg_tabla):
+# Columnas de identidad que NO son dato de negocio y por tanto no se comparan:
+# el GLOBALID/GUID es una identidad local de cada geodatabase (en el proceso 2 el
+# destino tiene uno distinto al origen), no un valor a diferenciar.
+COLUMNAS_IDENTIDAD = {"GLOBALID", "GUID"}
+
+
+def columnas_comparables(todas_las_columnas, cfg_tabla, extra_ignorar=None):
     """Devuelve la lista ORDENADA de columnas que entran en la comparacion.
 
     Se excluyen:
       * columnas de sistema (OBJECTID, SHAPE, SHAPE_LENGTH, SHAPE_AREA),
+      * columnas de identidad (GLOBALID, GUID) -> son la llave, no un valor,
       * columnas espejo (MIOID, MIGUID),
+      * columnas FK remapeadas por relaciones (``extra_ignorar``): tras el
+        remapeo quedan con la identidad del destino y compararlas produciria
+        falsos "modificados",
       * las indicadas explicitamente en ``cfg_tabla.ignorar``.
 
     La geometria (SHAPE) se compara aparte (ver comparador/arcpy), no aqui.
 
     :param todas_las_columnas: lista de nombres de columna de la tabla.
     :param cfg_tabla:          instancia de comun.config.ConfigTabla.
+    :param extra_ignorar:      conjunto/iterable de columnas adicionales a excluir
+                               (p. ej. las FK de las relaciones de esta tabla).
     """
-    ignorar = set(cfg_tabla.ignorar) | COLUMNAS_SISTEMA | COLUMNAS_ESPEJO
-    # La llave de negocio SI se incluye en la comparacion como ancla, salvo que
-    # sea OBJECTID (local): en ese caso no se compara como valor.
+    ignorar = (set(cfg_tabla.ignorar) | COLUMNAS_SISTEMA | COLUMNAS_ESPEJO
+               | COLUMNAS_IDENTIDAD)
+    if extra_ignorar:
+        ignorar |= {c.upper() for c in extra_ignorar}
     resultado = []
     for col in todas_las_columnas:
         cu = col.upper()
@@ -99,6 +112,17 @@ def columnas_comparables(todas_las_columnas, cfg_tabla):
         resultado.append(cu)
     # Orden estable para que la firma sea reproducible.
     return sorted(resultado)
+
+
+def columnas_fk_de_tabla(nombre_tabla, relaciones):
+    """Conjunto de columnas FK que apuntan a esta tabla como destino de relacion.
+
+    Se usa para excluir esas columnas de la comparacion (quedan remapeadas a la
+    identidad del destino).
+    """
+    objetivo = nombre_tabla.upper()
+    return {r.columna_fk.upper() for r in relaciones
+            if r.tabla_destino.upper() == objetivo}
 
 
 def columnas_copiables(todas_las_columnas, cfg_tabla, incluir_globalid=True):
