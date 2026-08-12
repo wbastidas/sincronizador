@@ -351,17 +351,30 @@ class _UpdateCursorAutolimpia(object):
 
 
 class FakeArcpy(object):
-    """Emula el modulo arcpy sobre un :class:`Almacen` (workspace en memoria)."""
+    """Emula el modulo arcpy sobre uno o varios :class:`Almacen`.
 
-    def __init__(self, almacen, workspace="MEM"):
-        self._almacen = almacen
-        self._workspace = workspace
+    Puede recibir un unico almacen (con nombre de workspace) o un diccionario
+    ``{nombre_workspace: Almacen}`` para modelar origen y destino por separado
+    (necesario para leer geometria del origen y escribir en el destino).
+    """
+
+    def __init__(self, almacen=None, workspace="MEM", workspaces=None):
+        if workspaces is not None:
+            self._workspaces = {k.upper(): v for k, v in workspaces.items()}
+        else:
+            self._workspaces = {workspace.upper(): almacen}
         self.env = _Env()
         self.da = _DA(self)
 
     # arcpy.Exists / ListDatasets / Describe / verificaciones
     def Exists(self, ruta):
-        return os.path.basename(ruta).upper() in self._almacen.tablas
+        ws = os.path.basename(os.path.dirname(ruta)).upper()
+        base = os.path.basename(ruta).upper()
+        alm = self._workspaces.get(ws)
+        if alm is not None:
+            return base in alm.tablas
+        # Buscar en cualquier workspace.
+        return any(base in a.tablas for a in self._workspaces.values())
 
     def ListDatasets(self, comodin="*", tipo=None):
         return []  # sin feature datasets ni redes en el doble
@@ -390,4 +403,13 @@ class FakeArcpy(object):
         pass
 
     def _tabla_de(self, ruta):
-        return self._almacen.tabla(os.path.basename(ruta))
+        ws = os.path.basename(os.path.dirname(ruta)).upper()
+        base = os.path.basename(ruta)
+        alm = self._workspaces.get(ws)
+        if alm is not None and base.upper() in alm.tablas:
+            return alm.tabla(base)
+        # Buscar en cualquier workspace por nombre de tabla.
+        for a in self._workspaces.values():
+            if base.upper() in a.tablas:
+                return a.tabla(base)
+        raise KeyError(u"Tabla no encontrada en ningun workspace: %s" % ruta)

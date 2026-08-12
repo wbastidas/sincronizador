@@ -26,12 +26,14 @@ de **nuevos / modificados / eliminados**.
 python -m entorno_prueba.demo_local
 ```
 
-Ejecuta: reporte previo → Proceso 1 → verificación → Proceso 2 → verificación
-(por `MIGUID`). Deja los CSV en `entorno_prueba/salidas/`. Salida esperada:
+Ejecuta: reporte previo → Proceso 1 → verificación → Proceso 2 (incluye una
+feature class con **geometría** `POSTEPRUEBA`) → verificación por `MIGUID` +
+comprobación de que la geometría `SHAPE` se transfirió. Deja los CSV en
+`entorno_prueba/salidas/`. Salida esperada:
 
 ```
  PROCESO 1: SINCRONIZADO (diferencias restantes=0)
- PROCESO 2: SINCRONIZADO (diferencias restantes=0)
+ PROCESO 2: SINCRONIZADO (diferencias=0, geometria=OK)
 ```
 
 ## 2. Prueba en servidor real
@@ -56,6 +58,19 @@ los `.sde` con el Python de ArcGIS:
     --crear-dominio
 ```
 
+### Paso 2b (opcional) — Feature class con geometría ST_GEOMETRY
+Para probar también la geometría, cree y pueble `POSTEPRUEBA` en ambas bases:
+
+```bat
+"C:\Python27\ArcGIS10.8\python.exe" entorno_prueba\crear_fc_geometrica.py ^
+    --sde-origen C:\conexiones\origen.sde --sde-destino C:\conexiones\destino.sde ^
+    --n 500 --srid 4326
+```
+
+`POSTEPRUEBA` ya está incluida en `config_prueba/tablas.json`
+(`columna_geometria: "SHAPE"`), así que el Proceso 2 la sincronizará junto con las
+demás y la verificación por `MIGUID` confirmará que la geometría quedó igual.
+
 ### Paso 3 — Ejecutar la prueba completa
 ```bash
 bash entorno_prueba/ejecutar_prueba_real.sh 20000     # 20.000 estructuras
@@ -77,6 +92,7 @@ El script hace, para cada proceso: generar datos → reporte previo → sincroni
 | `sql/01_esquema.sql` | DDL de las tablas de prueba (ejecutar en origen y destino) |
 | `generar_datos.py` | Puebla origen y destino divergente vía cx_Oracle |
 | `crear_conexiones_sde.py` | Crea los `.sde` y un dominio de prueba (arcpy) |
+| `crear_fc_geometrica.py` | Crea/puebla la FC `POSTEPRUEBA` con ST_GEOMETRY (arcpy) |
 | `config_prueba/tablas.json` | Configuración de las 3 tablas y 2 relaciones |
 | `ejecutar_prueba_real.sh` | Orquesta generar → reportar → sincronizar → verificar |
 

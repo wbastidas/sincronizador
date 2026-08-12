@@ -11,7 +11,9 @@
   "tablas": [
     { "nombre": "ESTRUCTURAANIVEL", "llave_negocio": "GLOBALID", "columna_geometria": null },
     { "nombre": "PUNTOCARGA", "llave_negocio": "GLOBALID", "columna_geometria": null },
-    { "nombre": "CONEXIONCONSUMIDOR", "llave_negocio": "GLOBALID", "columna_geometria": null }
+    { "nombre": "CONEXIONCONSUMIDOR", "llave_negocio": "GLOBALID", "columna_geometria": null },
+    { "_comentario": "Feature class con geometria ST_GEOMETRY (creada por crear_fc_geometrica.py).",
+      "nombre": "POSTEPRUEBA", "llave_negocio": "GLOBALID", "columna_geometria": "SHAPE" }
   ],
 
   "relaciones": [

@@ -8,17 +8,18 @@ ArcGIS: usa los dobles de :mod:`tests.dobles` (FakeOracle / FakeArcpy) como si
 fueran las dos bases, con un subconjunto realista del modelo SIGELEC:
 
     ESTRUCTURAANIVEL (padre)
-        └─(GLOBALID → ESTRUCTURANIVELGLOBALID)─ PUNTOCARGA
-                                                    └─(GLOBALID → PUNTOCARGAGLOBALID)─ CONEXIONCONSUMIDOR
+        └─(GLOBALID→ESTRUCTURANIVELGLOBALID)─ PUNTOCARGA
+                                                └─(GLOBALID→PUNTOCARGAGLOBALID)─ CONEXIONCONSUMIDOR
+    POSTEPRUEBA (feature class con geometria SHAPE / ST_GEOMETRY)
 
-Ejecuta el flujo completo real que se usaria en produccion:
+Ejecuta el flujo completo real:
 
     1. Reporte de diferencias PREVIO (CSV).
-    2. Proceso 1 (Oracle directo)  -> Verificacion (debe dar SINCRONIZADO).
-    3. Proceso 2 (arcpy)           -> Verificacion por MIGUID (SINCRONIZADO).
+    2. Proceso 1 (Oracle directo)  -> Verificacion (SINCRONIZADO).
+    3. Proceso 2 (arcpy, con GEOMETRIA) -> Verificacion por MIGUID (SINCRONIZADO)
+       + comprobacion de que la geometria (SHAPE) se transfirio correctamente.
 
-Incluye datos con **caracteres especiales** (tildes, enies, comas) y una mezcla
-de nuevos / modificados / eliminados. Genera los CSV en ``entorno_prueba/salidas``.
+Datos con **caracteres especiales**. CSV en ``entorno_prueba/salidas``.
 
 Ejecutar::
 
@@ -27,12 +28,14 @@ Ejecutar::
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import hashlib
 import io
 import os
 import sys
 
 from comun.config import ConfigTabla, ConfigRelacion
 from comun.log import obtener_logger
+from comun.utiles import normalizar_guid
 from tests.dobles import Almacen, FakeOracle, FakeArcpy, nuevo_guid
 
 import herramientas.reporte_diferencias as R
@@ -41,38 +44,28 @@ import proceso2_arcpy.sincronizar_arcpy as P2
 
 SALIDAS = os.path.join(os.path.dirname(__file__), "salidas")
 
-# Tamanos del subconjunto (ajustables). Con estos valores los CSV son legibles.
-N_EST = 200         # estructuras
-N_PC = 400          # puntos de carga
-N_CX = 600          # conexiones
+N_EST = 200
+N_PC = 400
+N_CX = 600
+N_POSTE = 120
 
 
-# --------------------------------------------------------------------------- #
+def _fabrica(params, autocommit=False):
+    return params["_fake"]
+
+
 class _Con(object):
-    def __init__(self, fake):
+    def __init__(self, fake, ws):
         self.oracle = {"_fake": fake}
-        self.sde_workspace = "MEM"
+        self.sde_workspace = ws
 
 
 class Cfg(object):
-    def __init__(self, fo, fd):
-        self.origen = _Con(fo)
-        self.destino = _Con(fd)
-        self.tablas = [
-            ConfigTabla({"nombre": "ESTRUCTURAANIVEL", "columna_geometria": None}),
-            ConfigTabla({"nombre": "PUNTOCARGA", "columna_geometria": None}),
-            ConfigTabla({"nombre": "CONEXIONCONSUMIDOR", "columna_geometria": None}),
-        ]
-        self.relaciones = [
-            ConfigRelacion({"nombre": "EstrucNivel_PuntoCarga",
-                            "tabla_origen": "ESTRUCTURAANIVEL",
-                            "tabla_destino": "PUNTOCARGA", "tipo_llave": "guid",
-                            "columna_fk": "ESTRUCTURANIVELGLOBALID"}),
-            ConfigRelacion({"nombre": "PuntoCarga_ConexConsumidor",
-                            "tabla_origen": "PUNTOCARGA",
-                            "tabla_destino": "CONEXIONCONSUMIDOR", "tipo_llave": "guid",
-                            "columna_fk": "PUNTOCARGAGLOBALID"}),
-        ]
+    def __init__(self, fo, fd, tablas, relaciones, ws_origen="ORIG", ws_destino="DEST"):
+        self.origen = _Con(fo, ws_origen)
+        self.destino = _Con(fd, ws_destino)
+        self.tablas = tablas
+        self.relaciones = relaciones
         self.incluir_red_geometrica = False
         self.sincronizar_dominios = False
         self.tamano_lote = 500
@@ -83,19 +76,29 @@ class Cfg(object):
             yield t
 
 
-def _fabrica(params, autocommit=False):
-    return params["_fake"]
+RELACIONES = [
+    ConfigRelacion({"nombre": "EstrucNivel_PuntoCarga",
+                    "tabla_origen": "ESTRUCTURAANIVEL",
+                    "tabla_destino": "PUNTOCARGA", "tipo_llave": "guid",
+                    "columna_fk": "ESTRUCTURANIVELGLOBALID"}),
+    ConfigRelacion({"nombre": "PuntoCarga_ConexConsumidor",
+                    "tabla_origen": "PUNTOCARGA",
+                    "tabla_destino": "CONEXIONCONSUMIDOR", "tipo_llave": "guid",
+                    "columna_fk": "PUNTOCARGAGLOBALID"}),
+]
 
 
-# --------------------------------------------------------------------------- #
-# Construccion de datos
-# --------------------------------------------------------------------------- #
 def _texto(prefijo, i):
-    # Incluye caracteres especiales a proposito.
     return u"%s_%d Muñoz, Ñandú áéíóú" % (prefijo, i)
 
 
-def construir_origen():
+def _wkb(i, variante=0):
+    # Geometria opaca para el doble (en arcpy real seria WKB binario).
+    return ("POINT|%d|%d" % (i, variante)).encode("utf-8")
+
+
+# --------------------------------------------------------------------------- #
+def construir_origen(con_geometria=False):
     a = Almacen()
     est = a.crear("ESTRUCTURAANIVEL",
                   ["OBJECTID", "GLOBALID", "NOMBRE", "CODIGOEMPRESA"])
@@ -107,47 +110,39 @@ def construir_origen():
         est.filas.append({"OBJECTID": i + 1, "GLOBALID": "{EST-%06d}" % i,
                           "NOMBRE": _texto(u"Estr", i), "CODIGOEMPRESA": "001"})
     for i in range(N_PC):
-        est_gid = "{EST-%06d}" % (i % N_EST)
         pc.filas.append({"OBJECTID": i + 1, "GLOBALID": "{PC-%06d}" % i,
-                         "ESTRUCTURANIVELGLOBALID": est_gid,
+                         "ESTRUCTURANIVELGLOBALID": "{EST-%06d}" % (i % N_EST),
                          "NOMBRE": _texto(u"PC", i), "CARGA": i * 1.5})
     for i in range(N_CX):
-        pc_gid = "{PC-%06d}" % (i % N_PC)
         cx.filas.append({"OBJECTID": i + 1, "GLOBALID": "{CX-%06d}" % i,
-                         "PUNTOCARGAGLOBALID": pc_gid,
+                         "PUNTOCARGAGLOBALID": "{PC-%06d}" % (i % N_PC),
                          "CODIGOCLIENTE": "CLI%06d" % i,
                          "NOMBRECLIENTE": _texto(u"Cliente", i)})
+    if con_geometria:
+        po = a.crear("POSTEPRUEBA",
+                     ["OBJECTID", "GLOBALID", "NOMBRE", "CODIGOEMPRESA", "SHAPE"])
+        for i in range(N_POSTE):
+            po.filas.append({"OBJECTID": i + 1, "GLOBALID": "{POS-%06d}" % i,
+                             "NOMBRE": _texto(u"Poste", i), "CODIGOEMPRESA": "001",
+                             "SHAPE": None, "SHAPE@WKB": _wkb(i)})
     return a
 
 
 def construir_destino_p1(origen):
-    """Destino divergente para el proceso 1 (identidad por GLOBALID copiado).
-
-    - primeras 60% filas: iguales
-    - siguiente 25%: modificadas (cambia un valor)
-    - ultimo 15% de origen: ausentes (seran NUEVOS)
-    - se agregan filas extra que no existen en origen (seran ELIMINADOS)
-    """
     d = Almacen()
     for nombre in ("ESTRUCTURAANIVEL", "PUNTOCARGA", "CONEXIONCONSUMIDOR"):
         to = origen.tabla(nombre)
         td = d.crear(nombre, list(to.columnas))
         n = len(to.filas)
-        corte_igual = int(n * 0.60)
-        corte_mod = int(n * 0.85)  # 60-85% modificadas; 85-100% ausentes (nuevos)
+        ci, cm = int(n * 0.60), int(n * 0.85)
         for k, fila in enumerate(to.filas):
-            if k < corte_igual:
+            if k < ci:
                 td.filas.append(dict(fila))
-            elif k < corte_mod:
+            elif k < cm:
                 copia = dict(fila)
-                # Modificar un campo de texto/numero segun la tabla.
-                if "NOMBRE" in copia:
-                    copia["NOMBRE"] = u"VIEJO " + (copia["NOMBRE"] or u"")
-                elif "NOMBRECLIENTE" in copia:
-                    copia["NOMBRECLIENTE"] = u"VIEJO " + (copia["NOMBRECLIENTE"] or u"")
+                campo = "NOMBRE" if "NOMBRE" in copia else "NOMBRECLIENTE"
+                copia[campo] = u"VIEJO " + (copia[campo] or u"")
                 td.filas.append(copia)
-            # else: ausente -> nuevo
-        # Extras que sobran en destino -> eliminados.
         base = 900000
         for j in range(int(n * 0.10)):
             fila = {c: None for c in td.columnas}
@@ -158,32 +153,36 @@ def construir_destino_p1(origen):
 
 
 def construir_destino_p2(origen):
-    """Destino divergente para el proceso 2 (identidad del origen en MIGUID)."""
     d = Almacen()
-    for nombre in ("ESTRUCTURAANIVEL", "PUNTOCARGA", "CONEXIONCONSUMIDOR"):
+    tablas = ["ESTRUCTURAANIVEL", "PUNTOCARGA", "CONEXIONCONSUMIDOR", "POSTEPRUEBA"]
+    for nombre in tablas:
         to = origen.tabla(nombre)
-        cols = list(to.columnas) + ["MIOID", "MIGUID"]
-        td = d.crear(nombre, cols)
+        td = d.crear(nombre, list(to.columnas) + ["MIOID", "MIGUID"])
         n = len(to.filas)
-        corte_igual = int(n * 0.60)
-        corte_mod = int(n * 0.85)
+        ci, cm = int(n * 0.60), int(n * 0.85)
         doid = 700000
         for k, fila in enumerate(to.filas):
-            if k >= corte_mod:
+            if k >= cm:
                 continue  # ausente -> nuevo
             copia = dict(fila)
-            copia["MIGUID"] = fila["GLOBALID"]       # identidad de origen
+            copia["MIGUID"] = fila["GLOBALID"]
             copia["MIOID"] = fila["OBJECTID"]
-            copia["GLOBALID"] = nuevo_guid()          # identidad local distinta
+            copia["GLOBALID"] = nuevo_guid()
             copia["OBJECTID"] = doid
             doid += 1
-            if corte_igual <= k < corte_mod:          # modificadas
-                if "NOMBRE" in copia:
-                    copia["NOMBRE"] = u"VIEJO " + (fila["NOMBRE"] or u"")
-                elif "NOMBRECLIENTE" in copia:
-                    copia["NOMBRECLIENTE"] = u"VIEJO " + (fila["NOMBRECLIENTE"] or u"")
+            if nombre == "POSTEPRUEBA":
+                # Geometria: para [ci:cm) igual; para [50:60) forzamos geometria
+                # DISTINTA (variante 9) -> debe detectarse como modificado y
+                # corregirse a la del origen.
+                if 50 <= k < 60:
+                    copia["SHAPE@WKB"] = _wkb(k, variante=9)
+                else:
+                    copia["SHAPE@WKB"] = fila.get("SHAPE@WKB")
+            if ci <= k < cm:
+                campo = ("NOMBRECLIENTE" if nombre == "CONEXIONCONSUMIDOR"
+                         else "NOMBRE")
+                copia[campo] = u"VIEJO " + (fila.get(campo) or u"")
             td.filas.append(copia)
-        # Sobrantes -> eliminados (MIGUID que no existe en origen).
         for j in range(int(n * 0.10)):
             fila = {c: None for c in td.columnas}
             fila["OBJECTID"] = doid
@@ -206,7 +205,7 @@ def reporte(cfg, carpeta, log, verificar=False, llave_destino=None):
 
 
 def mostrar_csv(ruta, titulo, maximo=8):
-    print(u"\n  --- %s (%s) ---" % (titulo, ruta))
+    print(u"\n  --- %s ---" % titulo)
     if not os.path.isfile(ruta):
         print(u"    (no generado)")
         return
@@ -218,17 +217,48 @@ def mostrar_csv(ruta, titulo, maximo=8):
             print(u"    " + linea.rstrip())
 
 
+def verificar_geometria(origen, destino, log):
+    """Comprueba que la geometria (SHAPE@WKB) del destino iguala a la del origen."""
+    to = origen.tabla("POSTEPRUEBA")
+    td = destino.tabla("POSTEPRUEBA")
+    geo_o = {normalizar_guid(f["GLOBALID"]): f.get("SHAPE@WKB") for f in to.filas}
+    idx_d = {normalizar_guid(f["MIGUID"]): f for f in td.filas}
+    total = 0
+    iguales = 0
+    for gid, wkb_o in geo_o.items():
+        fd = idx_d.get(gid)
+        if fd is None:
+            continue
+        total += 1
+        h_o = hashlib.md5(wkb_o).hexdigest() if wkb_o else None
+        wkb_d = fd.get("SHAPE@WKB")
+        h_d = hashlib.md5(wkb_d).hexdigest() if wkb_d else None
+        if h_o == h_d:
+            iguales += 1
+    log.info(u"POSTEPRUEBA geometria: %d/%d con SHAPE identico al origen",
+             iguales, total)
+    return total > 0 and iguales == total
+
+
 def main():
     log = obtener_logger("demo_local", carpeta=SALIDAS)
     print(u"=========================================================")
     print(u" DEMO ENTORNO DE PRUEBA (subconjunto real SIGELEC)")
-    print(u" estructuras=%d puntos_carga=%d conexiones=%d" % (N_EST, N_PC, N_CX))
+    print(u" estructuras=%d puntos=%d conexiones=%d postes(geom)=%d" % (
+        N_EST, N_PC, N_CX, N_POSTE))
     print(u"=========================================================")
 
+    origen = construir_origen(con_geometria=True)
+
+    tablas_p1 = [ConfigTabla({"nombre": n, "columna_geometria": None})
+                 for n in ("ESTRUCTURAANIVEL", "PUNTOCARGA", "CONEXIONCONSUMIDOR")]
+    tablas_p2 = list(tablas_p1) + [
+        ConfigTabla({"nombre": "POSTEPRUEBA", "columna_geometria": "SHAPE"})]
+
     # ---------------- Proceso 1 ----------------
-    origen = construir_origen()
     dest1 = construir_destino_p1(origen)
-    cfg1 = Cfg(FakeOracle(origen), FakeOracle(dest1))
+    cfg1 = Cfg(FakeOracle(origen), FakeOracle(dest1), tablas_p1, RELACIONES,
+               ws_origen="ORIG", ws_destino="DEST")
 
     print(u"\n[1] Reporte PREVIO (proceso 1)")
     reporte(cfg1, os.path.join(SALIDAS, "p1_previo"), log)
@@ -248,12 +278,14 @@ def main():
     mostrar_csv(os.path.join(SALIDAS, "p1_verificacion", "verificacion.csv"),
                 "verificacion p1")
 
-    # ---------------- Proceso 2 ----------------
+    # ---------------- Proceso 2 (con geometria) ----------------
     dest2 = construir_destino_p2(origen)
-    cfg2 = Cfg(FakeOracle(origen), FakeOracle(dest2))
-    fake_arcpy = FakeArcpy(dest2, workspace="MEM")
+    cfg2 = Cfg(FakeOracle(origen), FakeOracle(dest2), tablas_p2, RELACIONES,
+               ws_origen="ORIG", ws_destino="DEST")
+    # Un unico FakeArcpy con DOS workspaces: ORIG (lectura de geometria) y DEST.
+    fake_arcpy = FakeArcpy(workspaces={"ORIG": origen, "DEST": dest2})
 
-    print(u"\n[4] Ejecutando PROCESO 2 (arcpy)")
+    print(u"\n[4] Ejecutando PROCESO 2 (arcpy, con geometria)")
     sys.modules["arcpy"] = fake_arcpy
     orig2 = P2.ConexionOracle
     P2.ConexionOracle = _fabrica
@@ -268,14 +300,16 @@ def main():
                      verificar=True, llave_destino="MIGUID")
     mostrar_csv(os.path.join(SALIDAS, "p2_verificacion", "verificacion.csv"),
                 "verificacion p2")
+    geom_ok = verificar_geometria(origen, dest2, log)
 
     print(u"\n=========================================================")
     ok1 = (total1 == 0)
-    ok2 = (codigo2 == 0 and total2 == 0)
+    ok2 = (codigo2 == 0 and total2 == 0 and geom_ok)
     print(u" PROCESO 1: %s (diferencias restantes=%d)" % (
         "SINCRONIZADO" if ok1 else "PENDIENTE", total1))
-    print(u" PROCESO 2: %s (diferencias restantes=%d)" % (
-        "SINCRONIZADO" if ok2 else "PENDIENTE", total2))
+    print(u" PROCESO 2: %s (diferencias=%d, geometria=%s)" % (
+        "SINCRONIZADO" if ok2 else "PENDIENTE", total2,
+        "OK" if geom_ok else "FALLO"))
     print(u"=========================================================")
     return 0 if (ok1 and ok2) else 1
 
