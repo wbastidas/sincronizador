@@ -57,21 +57,29 @@ def _indexar(filas, llave_negocio, es_guid):
 
 
 def comparar(tabla, filas_origen, filas_destino, columnas, llave_negocio,
-             firma_geometria=None):
+             firma_geometria=None, llave_destino=None):
     """Compara dos conjuntos de filas y devuelve un :class:`ResultadoComparacion`.
 
     :param tabla:          nombre de la tabla (solo para el reporte).
     :param filas_origen:   lista de dicts (columna->valor) del origen.
     :param filas_destino:  lista de dicts del destino.
     :param columnas:       columnas comparables (ver modelo.columnas_comparables).
-    :param llave_negocio:  nombre de la columna llave (normalmente GLOBALID).
+    :param llave_negocio:  nombre de la columna llave del ORIGEN (normalmente
+                           GLOBALID).
     :param firma_geometria: dict opcional {llave: hash_geometria} para incluir
                             la geometria en la comparacion sin cargarla en RAM.
+    :param llave_destino:  columna llave del DESTINO cuando difiere de la del
+                           origen. Es el caso de la verificacion del proceso 2:
+                           el origen se indexa por GLOBALID y el destino por
+                           MIGUID (que guarda el GLOBALID del origen). Si es
+                           None se usa la misma que el origen.
     """
-    es_guid = llave_negocio.upper() in ("GLOBALID", "GUID", "MIGUID")
+    llave_destino = llave_destino or llave_negocio
+    es_guid_o = llave_negocio.upper() in ("GLOBALID", "GUID", "MIGUID")
+    es_guid_d = llave_destino.upper() in ("GLOBALID", "GUID", "MIGUID")
 
-    idx_origen = _indexar(filas_origen, llave_negocio, es_guid)
-    idx_destino = _indexar(filas_destino, llave_negocio, es_guid)
+    idx_origen = _indexar(filas_origen, llave_negocio, es_guid_o)
+    idx_destino = _indexar(filas_destino, llave_destino, es_guid_d)
 
     resultado = ResultadoComparacion(tabla)
 

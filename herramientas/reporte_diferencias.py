@@ -55,10 +55,13 @@ from comun.utiles import normalizar_guid
 
 class GeneradorReporte(object):
     def __init__(self, configuracion, log, con_geometria=False,
-                 modo_verificacion=False):
+                 modo_verificacion=False, llave_destino=None):
         self.cfg = configuracion
         self.log = log
         self.con_geometria = con_geometria
+        # Llave del destino cuando difiere de la del origen (verificacion del
+        # proceso 2: origen por GLOBALID, destino por MIGUID).
+        self.llave_destino = llave_destino
         # En modo verificacion el reporte se interpreta como control POST-carga:
         # el resultado esperado es CERO diferencias.
         self.modo_verificacion = modo_verificacion
@@ -113,11 +116,16 @@ class GeneradorReporte(object):
             w_res.fila([nombre, "NO_EXISTE", "", "", "", len(cols_o), len(cols_d)])
             return
         comunes = [c for c in cols_o if c in set(cols_d)]
-        comparables = modelo.columnas_comparables(comunes, cfg_tabla)
+        # Excluir de la comparacion las FK remapeadas por relaciones (quedan con
+        # la identidad del destino tras el remapeo).
+        fks = modelo.columnas_fk_de_tabla(nombre, self.cfg.relaciones)
+        comparables = modelo.columnas_comparables(comunes, cfg_tabla,
+                                                  extra_ignorar=fks)
 
         llave = cfg_tabla.llave_negocio.upper()
+        llave_dest = (self.llave_destino or cfg_tabla.llave_negocio).upper()
         seleccion = list(comparables)
-        for extra in (llave, "OBJECTID"):
+        for extra in (llave, llave_dest, "OBJECTID"):
             if extra not in seleccion:
                 seleccion.append(extra)
         where = (" WHERE " + cfg_tabla.filtro) if cfg_tabla.filtro else ""
@@ -132,7 +140,8 @@ class GeneradorReporte(object):
             firma_geom = self._firmas_geometria(origen, destino, cfg_tabla, where)
 
         res = comparar(nombre, filas_o, filas_d, comparables, llave,
-                       firma_geometria=firma_geom)
+                       firma_geometria=firma_geom,
+                       llave_destino=self.llave_destino)
 
         w_res.fila([nombre, len(res.nuevos), len(res.modificados),
                     len(res.eliminados), res.iguales, len(filas_o), len(filas_d)])
@@ -273,6 +282,10 @@ def main(argv=None):
                         help="Modo verificacion POST-sincronizacion: agrega "
                              "verificacion.csv con veredicto global y devuelve "
                              "codigo de salida 1 si quedan diferencias.")
+    parser.add_argument("--llave-destino", default=None,
+                        help="Columna llave del destino cuando difiere de la del "
+                             "origen. Para verificar el proceso 2 use MIGUID "
+                             "(el destino se indexa por MIGUID = GLOBALID origen).")
     args = parser.parse_args(argv)
 
     log = obtener_logger("reporte_diferencias")
@@ -285,7 +298,8 @@ def main(argv=None):
         configuracion.incluir_red_geometrica = True
 
     total = GeneradorReporte(configuracion, log, con_geometria=args.con_geometria,
-                             modo_verificacion=args.verificar).ejecutar(args.salida)
+                             modo_verificacion=args.verificar,
+                             llave_destino=args.llave_destino).ejecutar(args.salida)
 
     # En verificacion, el codigo de salida refleja el resultado (0 = sin
     # diferencias, apto para automatizacion/CI post-carga).

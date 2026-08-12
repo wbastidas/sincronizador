@@ -7,6 +7,9 @@ config/conexiones.json
 logs/
 *.log
 
+# Salidas generadas por el entorno de prueba (reportes CSV/XLSX)
+entorno_prueba/salidas/
+
 # Python
 *.pyc
 __pycache__/
