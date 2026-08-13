@@ -1,0 +1,80 @@
+{
+  "_comentario": "Configuracion de tablas, relaciones y opciones de sincronizacion.",
+
+  "opciones": {
+    "incluir_red_geometrica": false,
+    "sincronizar_dominios": true,
+    "tamano_lote": 500,
+    "modo_simulacion": false
+  },
+
+  "tablas": [
+    {
+      "nombre": "CATALOGOESTRUCTURA",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "ignorar": ["FECHAMODIFICACIONREGISTRO", "USUARIOMODIFICACIONREGISTRO"],
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "ATRIBUTOSCONSUMIDOR",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "filtro": "CODIGOEMPRESA = '001'"
+    },
+    {
+      "nombre": "BancoDuctos",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false
+    },
+    {
+      "nombre": "PuntoCarga",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false
+    },
+    {
+      "nombre": "CONEXIONCONSUMIDOR",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false
+    },
+
+    {
+      "_comentario": "EJEMPLO de tabla de red geometrica: OPCIONAL. Solo se procesa si incluir_red_geometrica=true.",
+      "nombre": "Barra",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true
+    }
+  ],
+
+  "relaciones": [
+    {
+      "_comentario": "Relacion por GLOBALID: al reasignarse el GLOBALID del padre en proceso 2, se remapea la FK del hijo.",
+      "nombre": "PuntoCarga_ConexConsumidor",
+      "tabla_origen": "PuntoCarga",
+      "tabla_destino": "CONEXIONCONSUMIDOR",
+      "tipo_llave": "guid",
+      "columna_fk": "PUNTOCARGAGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuntoCarga",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuntoCarga",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "_comentario": "Relacion M:N por OBJECTID: se remapea con el mapa OBJECTID_origen->OBJECTID_destino.",
+      "nombre": "TramoBT_Ducto",
+      "tabla_origen": "Ducto",
+      "tabla_destino": "TramoBT_Ducto",
+      "tipo_llave": "oid",
+      "columna_fk": "DuctOID"
+    }
+  ]
+}

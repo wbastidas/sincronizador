@@ -1,0 +1,25 @@
+{
+  "_comentario": "Copie este archivo a conexiones.json y complete los valores. NO lo suba al repositorio con credenciales reales.",
+
+  "origen": {
+    "oracle": {
+      "dsn": "HOST_ORIGEN:1521/SERVICIO_ORIGEN",
+      "user": "sde",
+      "password": "CAMBIAR",
+      "nls_lang": "SPANISH_SPAIN.AL32UTF8",
+      "encoding": "UTF-8"
+    },
+    "sde_workspace": "C:\\conexiones\\origen.sde"
+  },
+
+  "destino": {
+    "oracle": {
+      "dsn": "HOST_DESTINO:1521/SERVICIO_DESTINO",
+      "user": "sde",
+      "password": "CAMBIAR",
+      "nls_lang": "SPANISH_SPAIN.AL32UTF8",
+      "encoding": "UTF-8"
+    },
+    "sde_workspace": "C:\\conexiones\\destino.sde"
+  }
+}

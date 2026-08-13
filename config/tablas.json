@@ -1,0 +1,1731 @@
+{
+  "_comentario": "Generado por herramientas/generar_config.py a partir del modelo. Incluye TODOS los elementos. Las relaciones M:N (con _comentario) asumen tabla intermedia = nombre de la relacion; ajuste si difiere. Revise tambien las tablas sin GLOBALID antes de la 1a corrida.",
+  "opciones": {
+    "incluir_red_geometrica": false,
+    "sincronizar_dominios": true,
+    "tamano_lote": 500,
+    "modo_simulacion": false
+  },
+  "tablas": [
+    {
+      "nombre": "ATRIBUTOSCONSUMIDOR",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "BOSQUE_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "BancoDuctos",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Barra",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "CALLE_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "CATALOGOESTRUCTURA",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "CIRCUITOFUENTE",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "CIRCUITOFUENTEID",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "CNELGYERIO100_100",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "CNELGYERIO1600_1600",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "CNELGYERIO400_400",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "COMUNIDAD_P",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "CONEXIONCONSUMIDOR",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "CURVA_NIVEL_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Cobertura_Agencias",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Cobertura_Alimentadores",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Cobertura_Oficinas",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Cobertura_Subestaciones",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "CuartoControlSubestacion",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DATOSOPERADORA",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DETALLEDUCTO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DETALLEEQUIPO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DUCTODEFINICION",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DetalleTramoOperadoraAereo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DetalleZonaDesbroce",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "DiagParedEstructuraSubterranea",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DiagPisoEstructuraSubterranea",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "DiagramaConexionDuctos",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Ducto",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "EDIFICIO_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "EQUIPO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "ESTRUCTURAENPOSTE",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Ecuador_Cantones",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Ecuador_Limite",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Ecuador_Provincias",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Electrico_RedGeom_Junctions",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "EmpalmeEstructuraSubterranea",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "EstructuraANivel",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "EstructuraLineaSubterranea",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "EstructuraSoporte",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "EstructuraSubterranea",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "EstructurasSubestacion",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "GRILLA_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Generador",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "GeneradorDistribuido",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "INSTITUCIONENPOSTE",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "InsetFrameSource",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "InstalacionesEE",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "LAGO_LAGUNA_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LIMITE_ADMINISTRATIVO_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LIMITE_CANTONAL_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LIMITE_MAPA_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LIMITE_PARROQUIAL_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LIMITE_PROVINCIAL_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LINEA_TREN_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LOGDATOSTECNICOS",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LOGJERARQUIARED",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LOGNUEVOSSERVICIOS",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "LUGARESREFERENCIALES_P",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Luminaria",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MANZANA_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_CLASS_MODELNAMES",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_DOCUMENTS",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MM_EDITED_FEATURES",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_FIELD_MODELNAMES",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_HIDDEN_PACKAGES",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_MOBILE_IMPORT_ORDER",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_PACKAGES",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_PAGE_TEMPLATES",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MM_PERSIST_INFO",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_QAQC",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_SNAPPING",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_STORED_DISPLAYS",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MM_SYSTEM_DOCUMENTS",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MM_SYSTEM_PACKAGES",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_SYSTEM_PAGE_TEMPLATES",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MM_SYSTEM_PERSIST_INFO",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "MM_SYSTEM_STORED_DISPLAYS",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MOTORINDUCCION",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "MOTORSINCRONO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "NOMBRE_SITIO_P",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "NuevosServicios",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "OPERADORAENPOSTE",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Obras_Civiles_Electricas",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PARCELA_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "PARQUE_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "PLAN_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "POBLADO_P",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "PROYECTOS",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PROYECTOS_BID",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PUENTE_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "PUNTOS_PAGO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PUNTO_VETADO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Pararrayos",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PatioSubestacion",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "ProyectosFerum_Areas",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Proyectos_SGDA",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "PuestoCorrectorFactorPotencia",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuestoProteccionBajaTension",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuestoProteccionDinamico",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuestoReguladorTension",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuestoSeccionador",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuestoSeccionadorFusible",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuestoTransfDistribucion",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuestoTransfPotencia",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuntoApertura",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuntoCarga",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuntoMiscelaneo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "PuntosDistribuidora",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "RIO_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "RUTA_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "RUTA_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "RedDuctos_Net_Junctions",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Referencia",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "SECTOR_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "SENDERO_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "SERVICIOCALLES",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "SOLAR",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Semaforo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "SolicitudServicio",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Subestacion",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TRAMOSINFO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TUNEL_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "Tensor",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TextoDimEstructuraSubterranea",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TextoDucto",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TextoDuctoNotas",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TextoEstrucLineaSub",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoBajaTensionAereo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoBajaTensionSubterraneo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoDistribucionAereo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoDistribucionSubterraneo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoOperadoraAereo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoOperadoraSubterraneo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoSubtransmision",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoSubtransmisionAereo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "TramoSubtransmisionSubterraneo",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": true,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADCAPACITOR",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADFUSIBLE",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADLUMINARIA",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADPROTECCIONBAJATENSION",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADPROTECCIONDINAMICO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADREGULADORTENSION",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADTRANSFDISTRIBUCION",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UNIDADTRANSFPOTENCIA",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UbicBancoDuctos",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UbicDiagEstructuraSubterranea",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UnidadGeneradorDist_Bateria",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UnidadGeneradorDist_Panel",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "UnidadGeneradorDistribuido",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "Urbanizaciones",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "VIA_L",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "WMDatosTecnicos",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "ZONAS_P",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "ZONA_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "ZONA_CONFLICTO",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "ZONA_URBANA_A",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "ZonaDesbroce",
+      "llave_negocio": "GLOBALID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas"
+    },
+    {
+      "nombre": "prueba",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": "SHAPE",
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    },
+    {
+      "nombre": "DOMINIOS",
+      "llave_negocio": "OBJECTID",
+      "columna_geometria": null,
+      "red_geometrica": false,
+      "politica_borrado": "solo_migradas",
+      "_comentario": "Sin GLOBALID: se usa OBJECTID (local). Verifique una llave de negocio estable o sincronicela via el bloque de relaciones."
+    }
+  ],
+  "relaciones": [
+    {
+      "nombre": "EstrucNivel_PuestoTransPot",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoTransfPotencia",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "Luminaria_UnidadLuminaria",
+      "tabla_origen": "Luminaria",
+      "tabla_destino": "UNIDADLUMINARIA",
+      "tipo_llave": "guid",
+      "columna_fk": "LUMINARIAGLOBALID"
+    },
+    {
+      "nombre": "PuestoCorrFacPot_UnidadCapacitor",
+      "tabla_origen": "PuestoCorrectorFactorPotencia",
+      "tabla_destino": "UNIDADCAPACITOR",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOCORRFACPOTGLOBALID"
+    },
+    {
+      "nombre": "PuestoProtBT_UnidadProtBT",
+      "tabla_origen": "PuestoProteccionBajaTension",
+      "tabla_destino": "UNIDADPROTECCIONBAJATENSION",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOPROTECCIONBTGLOBALID"
+    },
+    {
+      "nombre": "PuestoProtDinam_CircuitoFuente",
+      "tabla_origen": "PuestoProteccionDinamico",
+      "tabla_destino": "CIRCUITOFUENTE",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOPROTDINAMGLOBALID"
+    },
+    {
+      "nombre": "PuestoProtDinam_PuestoTransfDist",
+      "tabla_origen": "PuestoProteccionDinamico",
+      "tabla_destino": "PuestoTransfDistribucion",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoProtDinam_UnidadProtDinam",
+      "tabla_origen": "PuestoProteccionDinamico",
+      "tabla_destino": "UNIDADPROTECCIONDINAMICO",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOPROTDINAMGLOBALID"
+    },
+    {
+      "nombre": "PuestoRegTens_UnidadRegTens",
+      "tabla_origen": "PuestoReguladorTension",
+      "tabla_destino": "UNIDADREGULADORTENSION",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOREGTENSGLOBALID"
+    },
+    {
+      "nombre": "PuestoSeccFusible_UnidadFusible",
+      "tabla_origen": "PuestoSeccionadorFusible",
+      "tabla_destino": "UNIDADFUSIBLE",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOSECFUSIBLEGLOBALID"
+    },
+    {
+      "nombre": "PuestoTransDist_Luminaria",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "Luminaria",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransDist_PuestoProtBT",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "PuestoProteccionBajaTension",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransDist_PuestoSeccFus",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "PuestoSeccionadorFusible",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransDist_PuntoCarga",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "PuntoCarga",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransDist_Semaforo",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "Semaforo",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransDist_TramoBTA",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "TramoBajaTensionAereo",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransDist_TramoBTS",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "TramoBajaTensionSubterraneo",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransDist_UnidadTransDist",
+      "tabla_origen": "PuestoTransfDistribucion",
+      "tabla_destino": "UNIDADTRANSFDISTRIBUCION",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOTRANSFDISTGLOBALID"
+    },
+    {
+      "nombre": "PuestoTransPot_TramoSTA",
+      "tabla_origen": "PuestoTransfPotencia",
+      "tabla_destino": "TramoSubtransmisionAereo",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransPot_TramoSTS",
+      "tabla_origen": "PuestoTransfPotencia",
+      "tabla_destino": "TramoSubtransmisionSubterraneo",
+      "tipo_llave": "guid",
+      "columna_fk": "PARENTCIRCUITSOURCEGUID"
+    },
+    {
+      "nombre": "PuestoTransPot_UnidadTransPot",
+      "tabla_origen": "PuestoTransfPotencia",
+      "tabla_destino": "UNIDADTRANSFPOTENCIA",
+      "tipo_llave": "guid",
+      "columna_fk": "PUESTOTRANSFPOTGLOBALID"
+    },
+    {
+      "nombre": "PuntoCarga_ConexConsumidor",
+      "tabla_origen": "PuntoCarga",
+      "tabla_destino": "CONEXIONCONSUMIDOR",
+      "tipo_llave": "guid",
+      "columna_fk": "PUNTOCARGAGLOBALID"
+    },
+    {
+      "nombre": "PuntoCarga_Generador",
+      "tabla_origen": "PuntoCarga",
+      "tabla_destino": "Generador",
+      "tipo_llave": "guid",
+      "columna_fk": "PUNTOCARGAGLOBALID"
+    },
+    {
+      "nombre": "PuntoCarga_GeneradorDist",
+      "tabla_origen": "PuntoCarga",
+      "tabla_destino": "GeneradorDistribuido",
+      "tipo_llave": "guid",
+      "columna_fk": "PUNTOCARGAGLOBALID"
+    },
+    {
+      "nombre": "PuntoCarga_MotorInduccion",
+      "tabla_origen": "PuntoCarga",
+      "tabla_destino": "MOTORINDUCCION",
+      "tipo_llave": "guid",
+      "columna_fk": "PUNTOCARGAGLOBALID"
+    },
+    {
+      "nombre": "PuntoCarga_MotorSincrono",
+      "tabla_origen": "PuntoCarga",
+      "tabla_destino": "MOTORSINCRONO",
+      "tipo_llave": "guid",
+      "columna_fk": "PUNTOCARGAGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuestoCorrFacPot",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoCorrectorFactorPotencia",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuestoProtBT",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoProteccionBajaTension",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuestoProtDin",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoProteccionDinamico",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuestoRegTens",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoReguladorTension",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuestoSecc",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoSeccionador",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuestoSeccFus",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoSeccionadorFusible",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuestoTransDist",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuestoTransfDistribucion",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuntoAper",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuntoApertura",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucNivel_PuntoCarga",
+      "tabla_origen": "EstructuraANivel",
+      "tabla_destino": "PuntoCarga",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_EstrucEnPoste",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "ESTRUCTURAENPOSTE",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_InstEnPoste",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "INSTITUCIONENPOSTE",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_Luminaria",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "Luminaria",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuestoCorrFacPot",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuestoCorrectorFactorPotencia",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuestoProtBT",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuestoProteccionBajaTension",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuestoProtDinam",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuestoProteccionDinamico",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuestoRegTens",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuestoReguladorTension",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuestoSecc",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuestoSeccionador",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuestoSeccFus",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuestoSeccionadorFusible",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuestoTransDist",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuestoTransfDistribucion",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_PuntoCarga",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "PuntoCarga",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_Semaforo",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "Semaforo",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "EstrucSop_Tensor",
+      "tabla_origen": "EstructuraSoporte",
+      "tabla_destino": "Tensor",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASOPORTEGLOBALID"
+    },
+    {
+      "nombre": "Subestacion_PuestoTransfPot",
+      "tabla_origen": "Subestacion",
+      "tabla_destino": "PuestoTransfPotencia",
+      "tipo_llave": "guid",
+      "columna_fk": "SUBESTACIONGLOBALID"
+    },
+    {
+      "nombre": "NuevosServicios_DatosTecnicos",
+      "tabla_origen": "NuevosServicios",
+      "tabla_destino": "WMDatosTecnicos",
+      "tipo_llave": "guid",
+      "columna_fk": "NUMEROORDEN"
+    },
+    {
+      "nombre": "EstruLineaSub_BancoDucto",
+      "tabla_origen": "EstructuraLineaSubterranea",
+      "tabla_destino": "BancoDuctos",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTLINEASUBGLOBALID"
+    },
+    {
+      "nombre": "EstruLineaSub_Texto",
+      "tabla_origen": "EstructuraLineaSubterranea",
+      "tabla_destino": "TextoEstrucLineaSub",
+      "tipo_llave": "guid",
+      "columna_fk": "FEATUREGUID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuestoCorrFacPot",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuestoCorrectorFactorPotencia",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuestoProtBT",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuestoProteccionBajaTension",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuestoSecc",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuestoSeccionador",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuestoSeccFus",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuestoSeccionadorFusible",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuestoTransDist",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuestoTransfDistribucion",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuestoTransPot",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuestoTransfPotencia",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuntoApertura",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuntoApertura",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "nombre": "EstrucSubterr_PuntoCarga",
+      "tabla_origen": "EstructuraSubterranea",
+      "tabla_destino": "PuntoCarga",
+      "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURASUBTERRANEAGLOBALID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "TramoBT_Ducto",
+      "tipo_llave": "oid",
+      "nombre": "TramoBT_Ducto_extremoOrigen",
+      "tabla_origen": "TramoBajaTensionSubterraneo",
+      "columna_fk": "SecondaryUGOID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "TramoBT_Ducto",
+      "tipo_llave": "oid",
+      "nombre": "TramoBT_Ducto_extremoDestino",
+      "tabla_origen": "Ducto",
+      "columna_fk": "DuctOID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "TramoDist_Ducto",
+      "tipo_llave": "oid",
+      "nombre": "TramoDist_Ducto_extremoOrigen",
+      "tabla_origen": "TramoDistribucionSubterraneo",
+      "columna_fk": "PrimaryConductorOID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "TramoDist_Ducto",
+      "tipo_llave": "oid",
+      "nombre": "TramoDist_Ducto_extremoDestino",
+      "tabla_origen": "Ducto",
+      "columna_fk": "DuctOID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "TramoSubtrans_Ducto",
+      "tipo_llave": "oid",
+      "nombre": "TramoSubtrans_Ducto_extremoOrigen",
+      "tabla_origen": "TramoSubtransmisionSubterraneo",
+      "columna_fk": "PrimaryConductorOID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "TramoSubtrans_Ducto",
+      "tipo_llave": "oid",
+      "nombre": "TramoSubtrans_Ducto_extremoDestino",
+      "tabla_origen": "Ducto",
+      "columna_fk": "DuctOID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSub_EstruSubt",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSub_EstruSubt_extremoOrigen",
+      "tabla_origen": "EstructuraLineaSubterranea",
+      "columna_fk": "ULSObjectID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSub_EstruSubt",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSub_EstruSubt_extremoDestino",
+      "tabla_origen": "EstructuraSubterranea",
+      "columna_fk": "UGObjectId"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSub_EstrucSubterr",
+      "tipo_llave": "guid",
+      "nombre": "EstruLineaSub_EstrucSubterr_extremoOrigen",
+      "tabla_origen": "EstructuraLineaSubterranea",
+      "columna_fk": "ULSGuid"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSub_EstrucSubterr",
+      "tipo_llave": "guid",
+      "nombre": "EstruLineaSub_EstrucSubterr_extremoDestino",
+      "tabla_origen": "EstructuraSubterranea",
+      "columna_fk": "EstruSubtGuid"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSubt_TramoBTSubt",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSubt_TramoBTSubt_extremoOrigen",
+      "tabla_origen": "EstructuraLineaSubterranea",
+      "columna_fk": "ULSObjectID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSubt_TramoBTSubt",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSubt_TramoBTSubt_extremoDestino",
+      "tabla_origen": "TramoBajaTensionSubterraneo",
+      "columna_fk": "UGObjectID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSubt_TramoDistSubt",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSubt_TramoDistSubt_extremoOrigen",
+      "tabla_origen": "EstructuraLineaSubterranea",
+      "columna_fk": "ULSObjectID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSubt_TramoDistSubt",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSubt_TramoDistSubt_extremoDestino",
+      "tabla_origen": "TramoDistribucionSubterraneo",
+      "columna_fk": "UGObjectID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSubt_TramoSubTrans",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSubt_TramoSubTrans_extremoOrigen",
+      "tabla_origen": "EstructuraLineaSubterranea",
+      "columna_fk": "ULSObjectID"
+    },
+    {
+      "_comentario": "M:N: 'tabla_destino' asume la convencion de ArcGIS (tabla intermedia = nombre de la relationship class). Ajuste el nombre si su esquema difiere.",
+      "tabla_destino": "EstruLineaSubt_TramoSubTrans",
+      "tipo_llave": "oid",
+      "nombre": "EstruLineaSubt_TramoSubTrans_extremoDestino",
+      "tabla_origen": "TramoSubtransmisionSubterraneo",
+      "columna_fk": "UGObjectID"
+    }
+  ]
+}

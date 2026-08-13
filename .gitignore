@@ -1,0 +1,21 @@
+# Configuracion con credenciales reales (usar el *.example como plantilla)
+config/conexiones.json
+# Nota: config/tablas.json SI se versiona (no tiene credenciales; es el
+# catalogo completo de tablas/relaciones generado desde el modelo).
+
+# Logs
+logs/
+*.log
+
+# Salidas generadas por el entorno de prueba (reportes CSV/XLSX)
+entorno_prueba/salidas/
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+
+# Entornos / IDE
+.venv/
+.idea/
+.vscode/

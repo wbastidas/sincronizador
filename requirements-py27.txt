@@ -1,0 +1,25 @@
+# Dependencias para Python 2.7
+# -----------------------------
+# PROCESO 1 (Oracle puro) necesita cx_Oracle. Elija la version compatible con su
+# cliente Oracle (Instant Client) y con Python 2.7:
+#   * cx_Oracle 5.3   -> clientes Oracle antiguos (10g/11g), Python 2.7
+#   * cx_Oracle 6.4.1 -> ultima rama que aun soporta Python 2.7
+#   * cx_Oracle 7.3   -> ultima que soporta Python 2.7 (requiere Oracle Client 11.2+)
+#
+# Instalacion (ejemplo):
+#   pip install "cx_Oracle==7.3.0"
+#
+cx_Oracle>=5.3,<8.0
+
+# PROCESO 2 (arcpy) NO se instala con pip: arcpy viene incluido con
+# ArcGIS Desktop 10.8.1 y su interprete Python 2.7 (normalmente en
+# C:\Python27\ArcGIS10.8\python.exe). No agregue arcpy aqui.
+#
+# La libreria estandar cubre el resto (json, xml.etree, hashlib, io, logging, csv).
+#
+# OPCIONAL - Reporte en Excel (.xlsx):
+# El reporte de diferencias genera siempre CSV (que Excel abre directamente). Si
+# ademas desea un libro .xlsx con varias hojas, instale openpyxl compatible con
+# Python 2.7:
+#   pip install "openpyxl==2.6.4"
+openpyxl>=2.4,<2.7 ; python_version < "3"

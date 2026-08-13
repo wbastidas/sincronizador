@@ -1,0 +1,27 @@
+{
+  "_comentario": "Config de tablas para el ENTORNO DE PRUEBA (subconjunto: estructura -> puntocarga -> conexion).",
+
+  "opciones": {
+    "incluir_red_geometrica": false,
+    "sincronizar_dominios": false,
+    "tamano_lote": 1000,
+    "modo_simulacion": false
+  },
+
+  "tablas": [
+    { "nombre": "ESTRUCTURAANIVEL", "llave_negocio": "GLOBALID", "columna_geometria": null },
+    { "nombre": "PUNTOCARGA", "llave_negocio": "GLOBALID", "columna_geometria": null },
+    { "nombre": "CONEXIONCONSUMIDOR", "llave_negocio": "GLOBALID", "columna_geometria": null },
+    { "_comentario": "Feature class con geometria ST_GEOMETRY (creada por crear_fc_geometrica.py).",
+      "nombre": "POSTEPRUEBA", "llave_negocio": "GLOBALID", "columna_geometria": "SHAPE" }
+  ],
+
+  "relaciones": [
+    { "nombre": "EstrucNivel_PuntoCarga", "tabla_origen": "ESTRUCTURAANIVEL",
+      "tabla_destino": "PUNTOCARGA", "tipo_llave": "guid",
+      "columna_fk": "ESTRUCTURANIVELGLOBALID" },
+    { "nombre": "PuntoCarga_ConexConsumidor", "tabla_origen": "PUNTOCARGA",
+      "tabla_destino": "CONEXIONCONSUMIDOR", "tipo_llave": "guid",
+      "columna_fk": "PUNTOCARGAGLOBALID" }
+  ]
+}
